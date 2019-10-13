@@ -51,6 +51,20 @@ const dashboardStyle = {
   },
   cardTitle: {
     color: grayColor[2],
+    marginTop: "20px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "3px",
+    textDecoration: "none",
+    "& small": {
+      color: grayColor[1],
+      fontWeight: "400",
+      lineHeight: "2"
+    }
+  },
+  cardTitleWhite: {
+    color: whiteColor,
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
@@ -63,7 +77,8 @@ const dashboardStyle = {
       lineHeight: "1"
     }
   },
-  cardTitleWhite: {
+
+  cardTitleWhiteCenter: {
     color: whiteColor,
     marginTop: "0px",
     minHeight: "auto",
@@ -71,6 +86,7 @@ const dashboardStyle = {
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
     textDecoration: "none",
+    "text-align": "center",
     "& small": {
       color: grayColor[1],
       fontWeight: "400",
