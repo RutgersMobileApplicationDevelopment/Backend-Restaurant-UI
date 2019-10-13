@@ -16,6 +16,8 @@ import Accessibility from "@material-ui/icons/Accessibility";
 import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
+import { MemoryRouter as Router } from 'react-router';
+import { Link as RouterLink } from 'react-router-dom';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -43,6 +45,7 @@ import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js"
 const useStyles = makeStyles(styles);
 
 const rname = "Tacoria"
+const Link1 = React.forwardRef((props, ref) => <RouterLink innerRef={ref} {...props} />);
 
 function GenCards(restaraunts){
   const classes = useStyles();
@@ -53,7 +56,7 @@ function GenCards(restaraunts){
       (
         <GridItem xs={12} sm={6} md={3}>
         <Card>
-        <CardActionArea >
+        <CardActionArea component={Link1} to="/admin/table">
           <CardHeader color="success" stats icon>
             <CardIcon color="success">
               <Store />
@@ -74,7 +77,7 @@ function GenCards(restaraunts){
 
 export default function Dashboard() {
   const classes = useStyles();
-  
+
   return (
     <div>
       <GridContainer>
