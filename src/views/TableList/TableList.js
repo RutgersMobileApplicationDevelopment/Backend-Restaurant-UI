@@ -46,10 +46,16 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function TableList(props) {
-  const {restaurantId, restaurantName, restaurantAddress} = props;
+  console.log(props.location)
+  const restaurantId = props.location.restaurant.restaurantId;
+  const restaurantName = props.location.restaurant.restaurantName;
+  const restaurantAddress = props.location.restaurant.restaurantAddress;
   const [items, setItems] = useState([]);
   const [reviews, setReviews] = useState([]);
-  Axios.get("localhost:5000/restaurants/" + restaurantId + "/items")
+  const [fullName, setFullName] = useState("");
+  const [stars, setStars] = useState("");
+  const [comment, setComment] = useState("");
+  Axios.get("http://localhost:5000/restaurants/" + restaurantId + "/items")
     .then(function(res) {
       const items = []
       var i;
@@ -57,9 +63,11 @@ export default function TableList(props) {
         items.push([i.name, i.description, i.price])
       }
       setItems(items)
+    }).catch(function(err) {
+      console.log(err)
     })
 
-  Axios.get("localhost:5000/restaurants/" + restaurantId + "/reviews")
+  Axios.get("http://localhost:5000/restaurants/" + restaurantId + "/reviews")
     .then(function(res) {
       var r;
       const reviews = []
@@ -67,13 +75,16 @@ export default function TableList(props) {
         reviews.push([r.name, r.stars, r.comment])
       }
       setReviews(reviews)
+    }).catch(function(err) {
+      console.log(err)
     })
+
+  
 
   const classes = useStyles();
   return (
     <GridContainer>
-    <h1>{restaurantName}</h1>
-    <p>{restaurantAddress}</p>
+    <h1>{restaurantName} at {restaurantAddress}</h1>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="primary">
@@ -114,12 +125,22 @@ export default function TableList(props) {
         formControlProps={{
           fullWidth: true
         }}
+        inputProps={{
+          onChange: function(val) {
+            setFullName(val.target.value)
+          }
+        }}
       />
       <CustomInput
         labelText="Number of Stars"
         id="stars"
         formControlProps={{
           fullWidth: true
+        }}
+        inputProps={{
+          onChange: function(val) {
+            setStars(val.target.value)
+          }
         }}
       />
       <CustomInput
@@ -128,8 +149,21 @@ export default function TableList(props) {
         formControlProps={{
           fullWidth: true
         }}
+        inputProps={{
+          onChange: function(val) {
+            setComment(val.target.value)
+          }
+        }}
       />
-      <Button color="primary">Add new review</Button>
+      <Button color="primary" onClick={function(e) {
+        Axios.post("http://localhost:5000/restaurants/"+restaurantId+"/reviews", {
+          name: fullName,
+          stars: stars,
+          comment: comment
+        }).catch(function(err) {
+          console.log(err)
+        })
+      }}>Add new review</Button>
     </GridContainer>
     
   );

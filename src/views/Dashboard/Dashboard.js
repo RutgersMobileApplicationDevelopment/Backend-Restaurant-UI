@@ -51,20 +51,19 @@ function GenCards(Restaurants){
   const classes = useStyles();
   var output = []
   for (var key in Restaurants){
-    console.log(Restaurants)
     output.push(
       (
         <GridItem xs={12} sm={6} md={3}>
         <Card>
         <CardActionArea component={Link1} to={{
           pathname: '/admin/table',
-          Restaurant: Restaurants[key]
+          restaurant: Restaurants[key]
         }}>
           <CardHeader color="success" stats icon>
             <CardIcon color="success">
               <Store />
             </CardIcon>
-            <h1 className={classes.cardTitle}>{Restaurants[key].RestaurantName}</h1>
+            <h1 className={classes.cardTitle}>{Restaurants[key].restaurantName}</h1>
           </CardHeader>
           <CardFooter stats>
           </CardFooter>
@@ -84,7 +83,7 @@ export default function Dashboard() {
   return (
     <div>
       <GridContainer>
-        {GenCards([{RestaurantName:"tacoria", RestaurantId:"asdf", RestaurantAddress:"123 main St."},{RestaurantName:"stuffs"}])}
+        {GenCards([{restaurantName:"tacoria", restaurantId:"asdf", restaurantAddress:"123 main St."},{restaurantName:"stuffs", restaurantId: "abcd", restaurantAddress: "7 College Ave."}])}
       </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
