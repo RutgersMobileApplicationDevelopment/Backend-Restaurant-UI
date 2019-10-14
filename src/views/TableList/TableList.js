@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -8,6 +8,10 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import Axios from "axios";
+import { Button } from "@material-ui/core";
+import CustomInput from "components/CustomInput/CustomInput.js";
+
 
 const styles = {
   cardCategoryWhite: {
@@ -41,30 +45,48 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function TableList() {
+export default function TableList(props) {
+  const {restaurantId, restaurantName, restaurantAddress} = props;
+  const [items, setItems] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  Axios.get("localhost:5000/restaurants/" + restaurantId + "/items")
+    .then(function(res) {
+      const items = []
+      var i;
+      for (i in res) {
+        items.push([i.name, i.description, i.price])
+      }
+      setItems(items)
+    })
+
+  Axios.get("localhost:5000/restaurants/" + restaurantId + "/reviews")
+    .then(function(res) {
+      var r;
+      const reviews = []
+      for (r in res) {
+        reviews.push([r.name, r.stars, r.comment])
+      }
+      setReviews(reviews)
+    })
+
   const classes = useStyles();
   return (
     <GridContainer>
+    <h1>{restaurantName}</h1>
+    <p>{restaurantAddress}</p>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Simple Table</h4>
-            <p className={classes.cardCategoryWhite}>
+            <h4 className={classes.cardTitleWhite}>Menu</h4>
+            {/* <p className={classes.cardCategoryWhite}>
               Here is a subtitle for this table
-            </p>
+            </p> */}
           </CardHeader>
           <CardBody>
             <Table
               tableHeaderColor="primary"
-              tableHead={["Name", "Country", "City", "Salary"]}
-              tableData={[
-                ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
-                ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
-                ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"],
-                ["Philip Chaney", "Korea, South", "Overland Park", "$38,735"],
-                ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542"],
-                ["Mason Porter", "Chile", "Gloucester", "$78,615"]
-              ]}
+              tableHead={["Name", "Description", "Price"]}
+              tableData={items}
             />
           </CardBody>
         </Card>
@@ -73,40 +95,42 @@ export default function TableList() {
         <Card plain>
           <CardHeader plain color="primary">
             <h4 className={classes.cardTitleWhite}>
-              Table on Plain Background
+              Reviews
             </h4>
-            <p className={classes.cardCategoryWhite}>
-              Here is a subtitle for this table
-            </p>
           </CardHeader>
           <CardBody>
             <Table
               tableHeaderColor="primary"
-              tableHead={["ID", "Name", "Country", "City", "Salary"]}
-              tableData={[
-                ["1", "Dakota Rice", "$36,738", "Niger", "Oud-Turnhout"],
-                ["2", "Minerva Hooper", "$23,789", "Curaçao", "Sinaai-Waas"],
-                ["3", "Sage Rodriguez", "$56,142", "Netherlands", "Baileux"],
-                [
-                  "4",
-                  "Philip Chaney",
-                  "$38,735",
-                  "Korea, South",
-                  "Overland Park"
-                ],
-                [
-                  "5",
-                  "Doris Greene",
-                  "$63,542",
-                  "Malawi",
-                  "Feldkirchen in Kärnten"
-                ],
-                ["6", "Mason Porter", "$78,615", "Chile", "Gloucester"]
-              ]}
+              tableHead={["Name", "Stars", "Comment"]}
+              tableData={reviews}
             />
           </CardBody>
         </Card>
       </GridItem>
+
+      <CustomInput
+        labelText="Full Name"
+        id="full-name"
+        formControlProps={{
+          fullWidth: true
+        }}
+      />
+      <CustomInput
+        labelText="Number of Stars"
+        id="stars"
+        formControlProps={{
+          fullWidth: true
+        }}
+      />
+      <CustomInput
+        labelText="Comment"
+        id="comment"
+        formControlProps={{
+          fullWidth: true
+        }}
+      />
+      <Button color="primary">Add new review</Button>
     </GridContainer>
+    
   );
 }
