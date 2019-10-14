@@ -56,12 +56,15 @@ function GenCards(restaraunts){
       (
         <GridItem xs={12} sm={6} md={3}>
         <Card>
-        <CardActionArea component={Link1} to="/admin/table">
+        <CardActionArea component={Link1} to={{
+          pathname: '/admin/table',
+          restaraunt: restaraunts[key]
+        }}>
           <CardHeader color="success" stats icon>
             <CardIcon color="success">
               <Store />
             </CardIcon>
-            <h1 className={classes.cardTitle}>{restaraunts[key].name}</h1>
+            <h1 className={classes.cardTitle}>{restaraunts[key].restarauntName}</h1>
           </CardHeader>
           <CardFooter stats>
           </CardFooter>
@@ -81,7 +84,7 @@ export default function Dashboard() {
   return (
     <div>
       <GridContainer>
-        {GenCards([{name:"tacoria"},{name:"stuffs"}])}
+        {GenCards([{restarauntName:"tacoria", restarauntId:"asdf", restarauntAddress:"123 main St."},{restarauntName:"stuffs"}])}
       </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
