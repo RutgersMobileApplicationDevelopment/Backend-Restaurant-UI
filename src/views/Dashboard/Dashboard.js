@@ -47,24 +47,24 @@ const useStyles = makeStyles(styles);
 const rname = "Tacoria"
 const Link1 = React.forwardRef((props, ref) => <RouterLink innerRef={ref} {...props} />);
 
-function GenCards(restaraunts){
+function GenCards(Restaurants){
   const classes = useStyles();
   var output = []
-  for (var key in restaraunts){
-    console.log(restaraunts)
+  for (var key in Restaurants){
+    console.log(Restaurants)
     output.push(
       (
         <GridItem xs={12} sm={6} md={3}>
         <Card>
         <CardActionArea component={Link1} to={{
           pathname: '/admin/table',
-          restaraunt: restaraunts[key]
+          Restaurant: Restaurants[key]
         }}>
           <CardHeader color="success" stats icon>
             <CardIcon color="success">
               <Store />
             </CardIcon>
-            <h1 className={classes.cardTitle}>{restaraunts[key].restarauntName}</h1>
+            <h1 className={classes.cardTitle}>{Restaurants[key].RestaurantName}</h1>
           </CardHeader>
           <CardFooter stats>
           </CardFooter>
@@ -84,13 +84,13 @@ export default function Dashboard() {
   return (
     <div>
       <GridContainer>
-        {GenCards([{restarauntName:"tacoria", restarauntId:"asdf", restarauntAddress:"123 main St."},{restarauntName:"stuffs"}])}
+        {GenCards([{RestaurantName:"tacoria", RestaurantId:"asdf", RestaurantAddress:"123 main St."},{RestaurantName:"stuffs"}])}
       </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
         <CardActionArea >
             <CardHeader color="primary">
-              <h1 className={classes.cardTitleWhiteCenter}>Add New Restaraunts</h1>
+              <h1 className={classes.cardTitleWhiteCenter}>Add New Restaurants</h1>
             </CardHeader>
         </CardActionArea>
         </GridItem>
