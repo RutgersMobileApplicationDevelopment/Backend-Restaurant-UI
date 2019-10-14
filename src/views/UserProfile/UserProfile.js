@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -14,6 +14,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
 import avatar from "assets/img/faces/marc.jpg";
+import Axios from "axios";
 
 const styles = {
   cardCategoryWhite: {
@@ -36,46 +37,69 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function UserProfile() {
+function genMenuItems(menuItems) {
+  var output = []
+  for (key in menuItems) {
+    output.push(
+      (
+        <GridContainer>
+            <GridItem xs={12} sm={12} md={6}>
+              <CustomInput
+                labelText="Address"
+                id="first-name"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                inputProps={{
+                  defaultValue: restaurantAddress
+                }}
+              />
+            </GridItem>
+          </GridContainer>
+      )
+    )
+  }
+  return output
+}
+
+export default function UserProfile(props) {
   const classes = useStyles();
+
+  const [items, setItems] = useState([]);
+  const [itemName, setItemName] = useState([])
+  const [itemPrice, setItemPrice] = useState([])
+  const [itemDescription, setItemDescription] = useState([])
+
+  const restaurantId = props.location.restaurant.restaurantId;
+  const restaurantName = props.location.restaurant.restaurantName;
+  const restaurantAddress = props.location.restaurant.restaurantAddress;
+
+  Axios.get("http://localhost:5000/restaurants/"+restaurantId+"/items")
+    .then(function(res) {
+      setItems(res);
+    }).catch(function(err) {
+      console.log(err);
+    })
+
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              <p className={classes.cardCategoryWhite}>Complete your profile</p>
+              <h4 className={classes.cardTitleWhite}>Edit Restaurant</h4>
             </CardHeader>
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={5}>
                   <CustomInput
-                    labelText="Company (disabled)"
+                    labelText="Restaurant Name"
                     id="company-disabled"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
-                      disabled: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
-                  <CustomInput
-                    labelText="Username"
-                    id="username"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Email address"
-                    id="email-address"
-                    formControlProps={{
-                      fullWidth: true
+                      defaultValue: restaurantName
                     }}
                   />
                 </GridItem>
@@ -83,93 +107,94 @@ export default function UserProfile() {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
-                    labelText="First Name"
+                    labelText="Address"
                     id="first-name"
                     formControlProps={{
                       fullWidth: true
                     }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="Last Name"
-                    id="last-name"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="City"
-                    id="city"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Country"
-                    id="country"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Postal Code"
-                    id="postal-code"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
-                  <InputLabel style={{ color: "#AAAAAA" }}>About me</InputLabel>
-                  <CustomInput
-                    labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-                    id="about-me"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
                     inputProps={{
-                      multiline: true,
-                      rows: 5
+                      defaultValue: restaurantAddress
                     }}
                   />
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Update Profile</Button>
+              <Button color="primary">Update Restaurant</Button>
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card profile>
-            <CardAvatar profile>
-              <a href="#pablo" onClick={e => e.preventDefault()}>
-                <img src={avatar} alt="..." />
-              </a>
-            </CardAvatar>
-            <CardBody profile>
-              <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
-              <h4 className={classes.cardTitle}>Alec Thompson</h4>
-              <p className={classes.description}>
-                Don{"'"}t be scared of the truth because we need to restart the
-                human foundation in truth And I love you like Kanye loves Kanye
-                I love Rick Owens’ bed design but the back is...
-              </p>
-              <Button color="primary" round>
-                Follow
-              </Button>
+      </GridContainer>
+      <GridContainer>
+      <GridItem xs={12} sm={12} md={8}>
+          <Card>
+            <CardHeader color="primary">
+              <h4 className={classes.cardTitleWhite}>Add Menu Item</h4>
+            </CardHeader>
+            <CardBody>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={5}>
+                  <CustomInput
+                    labelText="Item Name"
+                    id="company-disabled"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    inputProps={{
+                      onChange: function(val) {
+                        setItemName(val.target.val)
+                      }
+                    }}
+                  />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={6}>
+                  <CustomInput
+                    labelText="Description"
+                    id="first-name"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    inputProps={{
+                      onChange: function(val) {
+                        setItemDescription(val.target.val)
+                      }
+                    }}
+                  />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={6}>
+                  <CustomInput
+                    labelText="Price"
+                    id="first-name"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    inputProps={{
+                      onChange: function(val) {
+                        setItemPrice(val.target.val)
+                      }
+                    }}
+                  />
+                </GridItem>
+              </GridContainer>
+              <Button color="primary" onClick={function(e) {
+                Axios.post("http://localhost:5000/restaurants/"+restaurantId+"/items", {
+                  name: itemName,
+                  price: itemPrice,
+                  description: itemDescription
+                }).then(function(res) {
+                  // reload jawn
+                }).catch(function(err) {
+                  console.log(err)
+                })
+              }}>Add Menu Item</Button>
             </CardBody>
+            <CardFooter>
+              <Button color="primary">Update Restaurant</Button>
+            </CardFooter>
           </Card>
         </GridItem>
       </GridContainer>

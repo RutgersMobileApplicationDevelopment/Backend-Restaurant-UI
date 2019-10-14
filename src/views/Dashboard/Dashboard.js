@@ -8,6 +8,7 @@ import Icon from "@material-ui/core/Icon";
 import Store from "@material-ui/icons/Store";
 import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
+import EditIcon from '@material-ui/icons/Edit';
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
@@ -67,6 +68,16 @@ function GenCards(Restaurants){
           </CardHeader>
           <CardFooter stats>
           </CardFooter>
+          </CardActionArea>
+          <CardActionArea component={Link1} to={{
+            pathname: '/admin/user',
+            restaurant: Restaurants[key]
+          }}>
+            <CardFooter>
+              <EditIcon />
+              <h4>Edit</h4>
+            </CardFooter>
+            
           </CardActionArea>
         </Card>
       </GridItem>
